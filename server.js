@@ -8,6 +8,14 @@ rtc.server.start = function(callback, iceCallback){
     reliable: true
   });
 
+  dc.onopen = function(e){
+    console.log('server: data channel open!');
+  };
+
+  dc.onmessage = function(e){
+    console.log('message: ', e);
+  };
+
 
   pc.createOffer(function(desc){
     pc.setLocalDescription(desc, function(){}, function(){});

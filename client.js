@@ -4,10 +4,7 @@ rtc.client.init = function(remoteOffer, callback, iceCallback){
 
   var pc = new webkitRTCPeerConnection(rtc.connection.cfg, rtc.connection.con);
 
-  var dc = pc.createDataChannel('test', {
-    reliable: true
-  });
-
+  var dc;
 
   var offerDesc = new RTCSessionDescription(remoteOffer.offer);
   pc.setRemoteDescription(offerDesc, function(){
@@ -48,8 +45,22 @@ rtc.client.init = function(remoteOffer, callback, iceCallback){
     console.info('ice gathering state change:', state);
   };
 
+  pc.ondatachannel = function(e){
+    console.log('client: received data channel');
+    dc = e.channel;
+    rtc.client.dc = dc;
+
+    dc.onopen = function(e){
+      console.log('client: data channel connected!');
+    };
+
+    dc.onmessage = function(e){
+      console.log('message: ', e);
+    };
+
+  };
+
 
   rtc.client.pc = pc;
-  rtc.client.dc = dc;
 
 };
