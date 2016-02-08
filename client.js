@@ -19,7 +19,7 @@ rtc.client.init = function(remoteOffer, callback, iceCallback){
   pc.createAnswer(function(answerDesc){
     pc.setLocalDescription(answerDesc);
     console.log('client answer ready!');
-    callback(answerDesc.toJSON());
+    callback(answerDesc);
   }, function(){
     console.log('client error');
   });

@@ -11,70 +11,47 @@ document.addEventListener("DOMContentLoaded", function(event) {
     server.recv.data = document.getElementById('serverRemoteAnswer');
     server.recv.btn = document.getElementById('serverRemoteAnswerBtn');
 
-    server.ice.send = document.getElementById('serverICE');
-    server.ice.recv = document.getElementById('serverRemoteICE');
-
-
     client.offer.data = document.getElementById('clientRemoteOffer');
     client.offer.btn = document.getElementById('clientRemoteOfferBtn');
 
     client.send.data = document.getElementById('clientAnswer');
     client.send.btn = document.getElementById('clientAnswerBtn');
 
-    client.ice.recv = document.getElementById('clientRemoteICE');
-    client.ice.send = document.getElementById('clientICE');
-
-
 
     server.offer.btn.onclick = function(evt){
+      var output = {offer: '', ice: []};
       rtc.server.start(function(offer){
-        server.offer.data.value = JSON.stringify(offer.toJSON());
+        output.offer = offer.toJSON();
       }, function(icecandidate){
-        var value;
-        if (icecandidate.candidate === null) { return; }
-        if (server.ice.send.value === '') {
-          value = [];
-          value.push(icecandidate.candidate);
-          server.ice.send.value = JSON.stringify(value);
-        } else {
-          value = JSON.parse(server.ice.send.value);
-          value.push(icecandidate.candidate);
-          server.ice.send.value = JSON.stringify(value);
+        if (icecandidate.candidate !== null) {
+          output.ice.push(icecandidate.candidate);
         }
+        server.offer.data.value = JSON.stringify(output);
       });
     };
 
 
     server.recv.btn.onclick = function(evt){
-      var answer = JSON.parse(server.recv.data.value);
-      var ice = JSON.parse(server.ice.recv.value);
-
-      var data = {answer: answer, ice: ice};
+      var input = JSON.parse(server.recv.data.value);
+      var data = {answer: input.answer, ice: input.ice};
       rtc.server.client(data);
     };
 
 
 
     client.offer.btn.onclick = function(evt){
-      var offer = JSON.parse(client.offer.data.value);
-      var ice = JSON.parse(client.ice.recv.value);
+      var input = JSON.parse(client.offer.data.value);
+      var data = {offer: input.offer, ice: input.ice};
 
-      var data = {offer: offer, ice: ice};
+      var output = {answer: '', ice: []};
 
       rtc.client.init(data, function(answer){
-        client.send.data.value = JSON.stringify(answer);
+        output.answer = answer.toJSON();
       }, function(icecandidate){
-        var value;
-        if (icecandidate.candidate === null) { return; }
-        if (client.ice.send.value === '') {
-          value = [];
-          value.push(icecandidate.candidate);
-          client.ice.send.value = JSON.stringify(value);
-        } else {
-          value = JSON.parse(server.ice.send.value);
-          value.push(icecandidate.candidate);
-          client.ice.send.value = JSON.stringify(value);
+        if (icecandidate.candidate !== null) {
+          output.ice.push(icecandidate.candidate);
         }
+        client.send.data.value = JSON.stringify(output);
       });
     };
 
