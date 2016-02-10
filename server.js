@@ -10,6 +10,7 @@ rtc.server.start = function(callback, iceCallback){
 
   dc.onopen = function(e){
     console.log('server: data channel open!');
+    game.server.notify.start();
   };
 
   dc.onmessage = function(e){

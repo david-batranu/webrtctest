@@ -1,5 +1,15 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-  (function(){
+
+  var game = window.game;
+
+
+  document.body.addEventListener('game.server.stop', function(){
+    game.running = false;
+  });
+
+  document.body.addEventListener('game.server.start', function(){
+
+    game.running = true;
 
     var circle = {};
     circle.x = 20;
@@ -13,22 +23,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
 
-
-    function draw_circle(ctx, circle){
-      ctx.beginPath();
-      ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
-      ctx.fillStyle = '#000';
-      ctx.fill();
-      ctx.stroke();
-    }
-
-    function clear_canvas(ctx){
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    }
-
     function gameloop() {
 
-      clear_canvas(ctx);
+      game.draw.clear(ctx);
 
       if (circle.x - circle.r < 0 || circle.x + circle.r > canvas.width){
         circle.direction *= -1;
@@ -36,13 +33,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       circle.x += circle.direction * circle.speed;
 
-      draw_circle(ctx, circle);
+      rtc.server.dc.send(JSON.stringify(circle));
 
-      requestAnimationFrame(gameloop);
+      game.draw.circle(ctx, circle);
+
+      if (game.running){
+        requestAnimationFrame(gameloop);
+      }
 
     }
 
     requestAnimationFrame(gameloop);
 
-  })();
+  });
+
 });
+

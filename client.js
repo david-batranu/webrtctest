@@ -56,6 +56,7 @@ rtc.client.init = function(remoteOffer, callback, iceCallback){
 
     dc.onmessage = function(e){
       console.log('message: ', e);
+      game.client.notify.update(e.data);
     };
 
   };
