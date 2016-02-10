@@ -19,13 +19,9 @@
   game.server.events.start = new CustomEvent('game.server.start');
   game.server.events.stop = new CustomEvent('game.server.stop');
 
-  game.client.events.update = function(data){
-    return new CustomEvent('game.client.update', {
-      detail: {
-        data: data
-      }
-    });
-  };
+  game.client.events.update = new CustomEvent('game.client.update', {
+    detail: {}
+  });
 
 
   game.server.notify.start = function(){
@@ -38,7 +34,8 @@
 
 
   game.client.notify.update = function(data){
-    var evt = game.client.events.update(JSON.parse(data));
+    var evt = game.client.events.update;
+    evt.detail.data = JSON.parse(data);
     document.body.dispatchEvent(evt);
   };
 

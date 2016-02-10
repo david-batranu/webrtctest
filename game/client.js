@@ -2,22 +2,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   var game = window.game;
 
-  document.body.addEventListener('game.client.update', function(evt){
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
 
-    var circle = evt.detail.data;
-
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-
-    game.draw.clear(ctx);
-
-    if (circle.x - circle.r < 0 || circle.x + circle.r > canvas.width){
-      circle.direction *= -1;
+  function gameloop() {
+    if (game.client.circle){
+      game.draw.clear(ctx);
+      game.draw.circle(ctx, game.client.circle);
     }
 
-    circle.x += circle.direction * circle.speed;
+    requestAnimationFrame(gameloop);
+  }
+  requestAnimationFrame(gameloop);
 
-    game.draw.circle(ctx, circle);
+  document.body.addEventListener('game.client.update', function(evt){
+
+    game.running = true;
+    game.client.circle = evt.detail.data;
 
   });
 
