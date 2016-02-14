@@ -3,7 +3,7 @@ var rtc = {
   client: {},
   connection: {
     cfg: {
-      iceServers: []
+      iceServers: [{'url': 'stun:stun.services.mozilla.com'}, {'url': 'stun:stun.l.google.com:19302'}]
     },
     con: {
       optional: [

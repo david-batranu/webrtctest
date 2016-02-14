@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     client.offer.btn = document.getElementById('clientRemoteOfferBtn');
 
     client.send.data = document.getElementById('clientAnswer');
-    client.send.btn = document.getElementById('clientAnswerBtn');
 
 
     server.offer.btn.onclick = function(evt){

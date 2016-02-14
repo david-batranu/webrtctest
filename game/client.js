@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       game.draw.circle(ctx, ball);
       game.draw.paddle(ctx, paddle);
       game.draw.paddle(ctx, r_paddle);
+      game.draw.net(ctx);
 
       //game.draw.collision_box(ctx, game.collision.box_paddle(paddle));
       //game.draw.collision_box(ctx, game.collision.box_paddle(r_paddle));

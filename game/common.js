@@ -68,6 +68,18 @@
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   };
 
+  game.draw.net = function(ctx){
+    ctx.beginPath();
+
+    var center = ctx.canvas.width / 2;
+
+    ctx.moveTo(center, 0);
+    ctx.lineTo(center, ctx.canvas.height);
+
+    ctx.strokeStyle = '#ccd';
+    ctx.stroke();
+  };
+
   game.update_paddle = function(ctx, paddle){
     var h = paddle.h / 2;
     var new_pos = paddle.y + paddle.direction * paddle.speed;
