@@ -40,6 +40,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
       game.draw.paddle(ctx, paddle);
       game.draw.paddle(ctx, r_paddle);
 
+      game.draw.collision_box(ctx, game.collision.box_paddle(paddle));
+      game.draw.collision_box(ctx, game.collision.box_paddle(r_paddle));
+      game.draw.collision_box(ctx, game.collision.box_ball(ball));
+
       if (game.running){
         requestAnimationFrame(gameloop);
       }

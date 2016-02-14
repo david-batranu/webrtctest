@@ -14,6 +14,7 @@
     events: {},
 
     object: {},
+    collision: {},
 
     draw: {}
   };
@@ -81,12 +82,63 @@
     });
   };
 
-  game.object.paddle = function(ctx) {
+  game.object.paddle = function(ctx){
     return {
       x: 0, y: ctx.canvas.height / 2,
       w: 20, h: ctx.canvas.height / 3,
       speed: 5
     };
+  };
+
+  game.object.ball = function(ctx){
+    return {
+      x: ctx.canvas.width / 2,
+      y: ctx.canvas.height / 2,
+      r: 5,
+      speed: 2,
+      direction: 0
+    };
+  };
+
+
+  game.collision.box_ball = function(ball){
+    return {
+      x: ball.x - ball.r,
+      y: ball.y - ball.r,
+      w: 2 * ball.r,
+      h: 2 * ball.r
+    };
+  };
+
+  game.collision.box_paddle = function(paddle){
+    return {
+      x: paddle.x - paddle.w / 2,
+      y: paddle.y - paddle.h / 2,
+      w: paddle.w,
+      h: paddle.h
+    };
+  };
+
+  game.collision.check = function(box1, box2){
+    return box1.x < box2.x + box2.w &&
+      box1.x + box1.w > box2.x &&
+      box1.y < box2.y + box2.h &&
+      box1.h + box1.y > box2.y;
+
+  };
+
+  game.draw.collision_box = function(ctx, box){
+    ctx.beginPath();
+
+    ctx.moveTo(box.x, box.y);
+
+    ctx.lineTo(box.x + box.w, box.y);
+    ctx.lineTo(box.x + box.w, box.y + box.h);
+    ctx.lineTo(box.x, box.y + box.h);
+    ctx.lineTo(box.x, box.y);
+
+    ctx.strokeStyle = '#f00';
+    ctx.stroke();
   };
 
   window.game = game;
