@@ -68,17 +68,26 @@
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   };
 
-  game.update_paddle = function(paddle, key){
-    if (key === 38){
-      paddle.y -= paddle.speed;
-    } else if (key === 40) {
-      paddle.y += paddle.speed;
+  game.update_paddle = function(ctx, paddle){
+    var h = paddle.h / 2;
+    var new_pos = paddle.y + paddle.direction * paddle.speed;
+    if (new_pos - h > 0 && new_pos + h < ctx.canvas.height){
+      paddle.y = new_pos;
     }
   };
 
-  game.init_keyevents = function(paddle){
+  game.init_keyevents = function(ctx, paddle){
     window.addEventListener('keydown', function(evt){
-      game.update_paddle(paddle, evt.keyCode);
+      if (evt.keyCode === 38){
+        paddle.direction = -1;
+      } else if (evt.keyCode === 40) {
+        paddle.direction = 1;
+      }
+    });
+    window.addEventListener('keyup', function(evt){
+      if (evt.keyCode === 38 || evt.keyCode === 40){
+        paddle.direction = 0;
+      }
     });
   };
 
@@ -86,7 +95,8 @@
     return {
       x: 0, y: ctx.canvas.height / 2,
       w: 20, h: ctx.canvas.height / 3,
-      speed: 5
+      speed: 5,
+      direction: 0
     };
   };
 
@@ -96,7 +106,10 @@
       y: ctx.canvas.height / 2,
       r: 5,
       speed: 2,
-      direction: 0
+      direction: {
+        x: 0,
+        y: 0
+      }
     };
   };
 
