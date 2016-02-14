@@ -13,6 +13,8 @@
     },
     events: {},
 
+    object: {},
+
     draw: {}
   };
 
@@ -65,8 +67,27 @@
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   };
 
+  game.update_paddle = function(paddle, key){
+    if (key === 38){
+      paddle.y -= paddle.speed;
+    } else if (key === 40) {
+      paddle.y += paddle.speed;
+    }
+  };
 
+  game.init_keyevents = function(paddle){
+    window.addEventListener('keydown', function(evt){
+      game.update_paddle(paddle, evt.keyCode);
+    });
+  };
 
+  game.object.paddle = function(ctx) {
+    return {
+      x: 0, y: ctx.canvas.height / 2,
+      w: 20, h: ctx.canvas.height / 3,
+      speed: 5
+    };
+  };
 
   window.game = game;
 

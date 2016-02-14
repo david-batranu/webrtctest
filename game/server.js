@@ -22,10 +22,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     circle.direction = 1;
     circle.speed = 2;
 
-    var paddle = {
-      x: ctx.canvas.width - 15, y: ctx.canvas.height / 2,
-      w: 20, h: ctx.canvas.height / 3
-    };
+    var paddle = game.object.paddle(ctx);
+    paddle.x = ctx.canvas.width - 15;
 
     var r_paddle = {};
 
@@ -33,6 +31,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var j_data = JSON.parse(data);
       r_paddle = j_data.paddle;
     };
+
+    game.init_keyevents(paddle);
 
     function gameloop() {
 

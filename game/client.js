@@ -15,10 +15,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
 
-    var paddle = {
-      x: 15, y: ctx.canvas.height / 2,
-      w: 20, h: ctx.canvas.height / 3
-    };
+    var paddle = game.object.paddle(ctx);
+    paddle.x = 15;
 
     var ball = {};
     var r_paddle = {};
@@ -28,6 +26,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       ball = j_data.ball;
       r_paddle = j_data.paddle;
     };
+
+    game.init_keyevents(paddle);
 
     function gameloop() {
       game.draw.clear(ctx);
