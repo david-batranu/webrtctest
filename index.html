@@ -9,35 +9,74 @@
     <script src="./game/common.js"></script>
     <script src="./game/server.js"></script>
     <script src="./game/client.js"></script>
+    <style>
+      body {
+        max-width: 1280px;
+        min-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px 0 20px;
+      }
+
+      #gamecontainer {
+        width: 100%;
+      }
+
+      #canvas {
+        width: 500px;
+        height: 300px;
+        border: 1px solid black;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .connect {
+        display: inline-block;
+      }
+      .connect-client {
+        float: right;
+      }
+    </style>
   </head>
   <body>
-    <h1>RTC Connect</h1>
+    <div class="center">
+      <h1>RTC Connect</h1>
+    </div>
 
-    <canvas id="canvas" width="200px" height="50px" style="border: 1px solid black;"></canvas>
-
-
-    <h2>Server</h2>
-    <h3>Server offer</h3>
-    <textarea placeholder="SDP offer" id="serverOffer"></textarea>
-    <br />
-    <button id="serverOfferBtn">Get server offer</button>
-
-    <h3>Client answer</h3>
-    <textarea placeholder="SDP answer" id="serverRemoteAnswer"></textarea>
-    <br />
-    <button id="serverRemoteAnswerBtn">Paste client answer</button>
+    <div class="center" id="gamecontainer">
+      <canvas id="canvas" width="500px" height="300px"></canvas>
+    </div>
 
 
-    <h2>Client</h2>
-    <h3>Server offer</h3>
-    <textarea placeholder="SDP offer" id="clientRemoteOffer"></textarea>
-    <br />
-    <button id="clientRemoteOfferBtn">Paste server offer</button>
+    <div class="connection">
+      <div class="connect connect-server">
+        <h2>Server</h2>
+        <h3>Server offer</h3>
+        <textarea placeholder="SDP offer" id="serverOffer"></textarea>
+        <br />
+        <button id="serverOfferBtn">Get server offer</button>
 
-    <h3>Client answer</h3>
-    <textarea placeholder="SDP answer" id="clientAnswer"></textarea>
-    <br />
-    <button id="clientAnswerBtn">Get client answer</button>
+        <h3>Client answer</h3>
+        <textarea placeholder="SDP answer" id="serverRemoteAnswer"></textarea>
+        <br />
+        <button id="serverRemoteAnswerBtn">Paste client answer</button>
+      </div>
+
+
+      <div class="connect connect-client">
+        <h2>Client</h2>
+        <h3>Server offer</h3>
+        <textarea placeholder="SDP offer" id="clientRemoteOffer"></textarea>
+        <br />
+        <button id="clientRemoteOfferBtn">Paste server offer</button>
+
+        <h3>Client answer</h3>
+        <textarea placeholder="SDP answer" id="clientAnswer"></textarea>
+        <br />
+        <button id="clientAnswerBtn">Get client answer</button>
+      </div>
+    </div>
 
   </body>
 </html>

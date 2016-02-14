@@ -23,6 +23,8 @@
     detail: {}
   });
 
+  game.client.events.start = new CustomEvent('game.client.start');
+
 
   game.server.notify.start = function(){
     document.body.dispatchEvent(game.server.events.start);
@@ -32,6 +34,10 @@
     document.body.dispatchEvent(game.server.events.stop);
   };
 
+
+  game.client.notify.start = function(){
+    document.body.dispatchEvent(game.client.events.start);
+  };
 
   game.client.notify.update = function(data){
     var evt = game.client.events.update;
@@ -46,6 +52,13 @@
     ctx.fillStyle = '#000';
     ctx.fill();
     ctx.stroke();
+  };
+
+  game.draw.paddle = function(ctx, paddle){
+    ctx.fillStyle = '#000';
+    var x = paddle.x - paddle.w / 2;
+    var y = paddle.y - paddle.h / 2;
+    ctx.fillRect(x, y, paddle.w, paddle.h);
   };
 
   game.draw.clear = function(ctx){

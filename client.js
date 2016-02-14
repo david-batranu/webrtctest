@@ -52,10 +52,12 @@ rtc.client.init = function(remoteOffer, callback, iceCallback){
 
     dc.onopen = function(e){
       console.log('client: data channel connected!');
+      game.client.notify.start();
     };
 
     dc.onmessage = function(e){
-      game.client.notify.update(e.data);
+      game.client.network_update(e.data);
+      //game.client.notify.update(e.data);
     };
 
   };

@@ -14,7 +14,7 @@ rtc.server.start = function(callback, iceCallback){
   };
 
   dc.onmessage = function(e){
-    console.log('message: ', e);
+    game.server.network_update(e.data);
   };
 
 
