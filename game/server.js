@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var y_diff = paddle.y - ball.y;
       ball.direction.x *= -1;
       ball.direction.y = Math.sin(y_diff) * Math.random();
+      ball.speed = ball.speed + (ball.speed * 0.01);
     };
 
     var reset_ball = function(ctx, ball) {
@@ -42,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       ball.y = ctx.canvas.height / 2;
       ball.direction.x *= -1;
       ball.direction.y = 0;
+      ball.speed = 5;
     };
 
     function gameloop() {
