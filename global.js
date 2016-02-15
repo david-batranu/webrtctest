@@ -7,10 +7,13 @@ var rtc = {
     },
     con: {
       optional: [
-        {
-          DtlsSrtpKeyAgreement: true
-        }
+      {
+        DtlsSrtpKeyAgreement: true
+      }
       ]
     }
   }
 };
+
+rtc.peerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection || window.msRTCPeerConnection;
+rtc.sessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription || window.webkitRTCSessionDescription || window.msRTCSessionDescription;

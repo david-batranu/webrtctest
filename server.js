@@ -2,7 +2,7 @@
 
 rtc.server.start = function(callback, iceCallback){
 
-  var pc = new webkitRTCPeerConnection(rtc.connection.cfg, rtc.connection.con);
+  var pc = new rtc.peerConnection(rtc.connection.cfg, rtc.connection.con);
 
   var dc = pc.createDataChannel('test', {
     reliable: true
@@ -54,7 +54,7 @@ rtc.server.start = function(callback, iceCallback){
 
 
 rtc.server.client = function(remoteAnswer){
-  var answerDesc = new RTCSessionDescription(remoteAnswer.answer);
+  var answerDesc = new rtc.sessionDescription(remoteAnswer.answer);
   rtc.server.pc.setRemoteDescription(answerDesc, function(){
     console.log('set remote success!');
     for (var idx in remoteAnswer.ice) {
@@ -62,5 +62,5 @@ rtc.server.client = function(remoteAnswer){
       var candidate = new RTCIceCandidate(ice);
       rtc.server.pc.addIceCandidate(candidate);
     }
-  });
+  }, function(){console.log('set remote failed!')});
 };

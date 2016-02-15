@@ -2,11 +2,11 @@
 
 rtc.client.init = function(remoteOffer, callback, iceCallback){
 
-  var pc = new webkitRTCPeerConnection(rtc.connection.cfg, rtc.connection.con);
+  var pc = new rtc.peerConnection(rtc.connection.cfg, rtc.connection.con);
 
   var dc;
 
-  var offerDesc = new RTCSessionDescription(remoteOffer.offer);
+  var offerDesc = new rtc.sessionDescription(remoteOffer.offer);
   pc.setRemoteDescription(offerDesc, function(){
     console.log('set remote success!');
     for (var idx in remoteOffer.ice) {
