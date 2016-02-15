@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var collision = function(paddle, ball){
       var y_diff = paddle.y - ball.y;
       ball.direction.x *= -1;
-      ball.direction.y = Math.sin(y_diff) * Math.random();
+      ball.direction.y += (paddle.speed * paddle.direction * 0.1) + Math.random();
       ball.speed = ball.speed + (ball.speed * 0.01);
     };
 
