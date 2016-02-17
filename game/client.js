@@ -45,8 +45,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       var boxes = game.collision.boxes(ctx, ball, paddle, r_paddle);
 
-      game.collision.check_all(ctx, paddle, r_paddle, ball, boxes, function(){});
-
       ball.move();
 
       game.update_paddle(ctx, paddle, function(){
