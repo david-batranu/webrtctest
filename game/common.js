@@ -49,6 +49,71 @@
   };
 
 
+  game.reset_ball = function(ctx, ball) {
+    var x = ball.direction.x;
+
+    var default_ball = game.object.ball(ctx);
+    for (var prop in default_ball){
+      if (ball.hasOwnProperty(prop)){
+        ball[prop] = default_ball[prop];
+      }
+    }
+
+    ball.direction.x = -x;
+  };
+
+  game.collision.boxes = function(ctx, ball, paddle, r_paddle){
+    var boxes = {};
+
+    boxes.ball = game.collision.box_ball(ball);
+    boxes.paddle = game.collision.box_paddle(paddle);
+    boxes.r_paddle = game.collision.box_paddle(r_paddle);
+    boxes.top_wall = {
+      x: 0, y: 0,
+      w: ctx.canvas.width,
+      h: 0
+    };
+    boxes.bot_wall = {
+      x: 0, y: ctx.canvas.height,
+      w: ctx.canvas.width,
+      h: 0
+    };
+
+    return boxes;
+  };
+
+  game.collision.check_all = function(ctx, paddle, r_paddle, ball, boxes, callback){
+    var collided = false;
+    if (game.collision.check(boxes.paddle, boxes.ball)){
+      game.collision.paddle_collision(paddle, ball);
+      collided = true;
+    } else if (game.collision.check(boxes.r_paddle, boxes.ball)){
+      game.collision.paddle_collision(r_paddle, ball);
+      collided = true;
+    } else if (game.collision.check(boxes.ball, boxes.top_wall)){
+      ball.direction.y *= -1;
+      collided = true;
+    } else if (game.collision.check(boxes.ball, boxes.bot_wall)){
+      ball.direction.y *= -1;
+      collided = true;
+    } else if (ball.x > ctx.canvas.width){
+      game.reset_ball(ctx, ball);
+      collided = true;
+    } else if (ball.x < 0){
+      game.reset_ball(ctx, ball);
+      collided = true;
+    }
+    if (collided){
+      callback();
+    }
+  };
+
+  game.collision.paddle_collision = function(paddle, ball){
+    ball.direction.x *= -1;
+    ball.direction.y += (paddle.speed * paddle.direction * 0.1);
+    ball.speed = ball.speed + (ball.speed * 0.01);
+  };
+
   game.draw.circle = function(ctx, circle){
     ctx.beginPath();
     ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
@@ -80,11 +145,21 @@
     ctx.stroke();
   };
 
-  game.update_paddle = function(ctx, paddle){
-    var h = paddle.h / 2;
-    var new_pos = paddle.y + paddle.direction * paddle.speed;
-    if (new_pos - h > 0 && new_pos + h < ctx.canvas.height){
-      paddle.y = new_pos;
+  game.draw.all = function(ctx, ball, paddle, r_paddle){
+    game.draw.circle(ctx, ball);
+    game.draw.paddle(ctx, paddle);
+    game.draw.paddle(ctx, r_paddle);
+    game.draw.net(ctx);
+  };
+
+  game.update_paddle = function(ctx, paddle, callback){
+    if (paddle.direction !== 0){
+      var h = paddle.h / 2;
+      var new_pos = paddle.y + paddle.direction * paddle.speed;
+      if (new_pos - h > 0 && new_pos + h < ctx.canvas.height){
+        paddle.y = new_pos;
+      }
+      callback();
     }
   };
 
@@ -117,14 +192,17 @@
       x: ctx.canvas.width / 2,
       y: ctx.canvas.height / 2,
       r: 5,
-      speed: 2,
+      speed: 5,
       direction: {
         x: 0,
         y: 0
+      },
+      move: function(){
+        this.x += this.direction.x * this.speed;
+        this.y += this.direction.y * this.speed;
       }
     };
   };
-
 
   game.collision.box_ball = function(ball){
     return {

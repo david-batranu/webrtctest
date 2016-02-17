@@ -18,13 +18,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var paddle = game.object.paddle(ctx);
     paddle.x = 15;
 
-    var ball = {};
-    var r_paddle = {};
+    var ball = game.object.ball(ctx);
+    ball.direction.x = 1;
+
+    var r_paddle = game.object.paddle(ctx);
+    r_paddle.x = ctx.canvas.width - 15;
 
     game.client.network_update = function(data){
       var j_data = JSON.parse(data);
-      ball = j_data.ball;
-      r_paddle = j_data.paddle;
+      if (j_data.ball){
+        var r_ball = j_data.ball;
+        ball.x = r_ball.x;
+        ball.y = r_ball.y;
+        ball.direction = r_ball.direction;
+        ball.speed = r_ball.speed;
+      }
+      if (j_data.paddle){
+        r_paddle = j_data.paddle;
+      }
     };
 
     game.init_keyevents(ctx, paddle);
@@ -32,20 +43,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function gameloop() {
       game.draw.clear(ctx);
 
-      rtc.client.dc.send(JSON.stringify({
-        paddle: paddle
-      }));
+      var boxes = game.collision.boxes(ctx, ball, paddle, r_paddle);
 
-      game.update_paddle(ctx, paddle);
+      game.collision.check_all(ctx, paddle, r_paddle, ball, boxes, function(){});
 
-      game.draw.circle(ctx, ball);
-      game.draw.paddle(ctx, paddle);
-      game.draw.paddle(ctx, r_paddle);
-      game.draw.net(ctx);
+      ball.move();
 
-      //game.draw.collision_box(ctx, game.collision.box_paddle(paddle));
-      //game.draw.collision_box(ctx, game.collision.box_paddle(r_paddle));
-      //game.draw.collision_box(ctx, game.collision.box_ball(ball));
+      game.update_paddle(ctx, paddle, function(){
+        rtc.client.dc.send(JSON.stringify({
+          paddle: paddle
+        }));
+      });
+
+      game.draw.all(ctx, ball, paddle, r_paddle);
 
       if (game.running){
         requestAnimationFrame(gameloop);
