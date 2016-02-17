@@ -111,6 +111,11 @@
   game.collision.paddle_collision = function(paddle, ball){
     ball.direction.x *= -1;
     ball.direction.y += (paddle.speed * paddle.direction * 0.1);
+    if (ball.direction.y > 1){
+      ball.direction.y = 1;
+    } else if (ball.direction.y < -1){
+      ball.direction.y = -1;
+    }
     ball.speed = ball.speed + (ball.speed * 0.01);
   };
 
