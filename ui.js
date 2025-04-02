@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     server.offer.btn.onclick = function(evt){
       var output = {offer: '', ice: []};
       rtc.server.start(function(offer){
-        output.offer = offer.toJSON();
+        output.offer = offer;
       }, function(icecandidate){
         if (icecandidate.candidate !== null) {
           output.ice.push(icecandidate.candidate);
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var output = {answer: '', ice: []};
 
       rtc.client.init(data, function(answer){
-        output.answer = answer.toJSON();
+        output.answer = answer;
       }, function(icecandidate){
         if (icecandidate.candidate !== null) {
           output.ice.push(icecandidate.candidate);

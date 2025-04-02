@@ -1,4 +1,4 @@
-var rtc = {
+const rtc = {
   server: {},
   client: {},
   connection: {

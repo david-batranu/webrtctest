@@ -2,16 +2,16 @@
 
 rtc.client.init = function(remoteOffer, callback, iceCallback){
 
-  var pc = new rtc.peerConnection(rtc.connection.cfg, rtc.connection.con);
+  const pc = new rtc.peerConnection(rtc.connection.cfg, rtc.connection.con);
 
-  var dc;
+  let dc;
 
-  var offerDesc = new rtc.sessionDescription(remoteOffer.offer);
+  const offerDesc = new rtc.sessionDescription(remoteOffer.offer);
   pc.setRemoteDescription(offerDesc, function(){
     console.log('set remote success!');
-    for (var idx in remoteOffer.ice) {
-      var ice = remoteOffer.ice[idx];
-      var candidate = new RTCIceCandidate(ice);
+    for (let idx in remoteOffer.ice) {
+      const ice = remoteOffer.ice[idx];
+      const candidate = new RTCIceCandidate(ice);
       pc.addIceCandidate(candidate);
     }
   });
